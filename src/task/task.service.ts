@@ -1,9 +1,15 @@
 import { Task } from './entities/task.entity';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UpdateProjectDto } from 'src/project/dto/update-project.dto';
 @Injectable()
 export class TaskService {
   constructor(
@@ -35,11 +41,40 @@ export class TaskService {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(
+    id: number,
+    updateProjectDto: UpdateProjectDto,
+  ): Promise<string> {
+    try {
+      const task = await this.taskRepo.findOne({
+        where: { id },
+      });
+      if (!task) {
+        throw new NotFoundException('Task not found');
+      }
+
+      await this.taskRepo.save({
+        ...task,
+        ...updateProjectDto,
+      });
+      return `Task id:${id} updated`;
+    } catch (error) {
+      throw new HttpException(
+        { message: error.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: number): Promise<string> {
+    try {
+      await this.taskRepo.delete(id);
+      return `Task id:${id} removed`;
+    } catch (error) {
+      throw new HttpException(
+        { message: error.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
