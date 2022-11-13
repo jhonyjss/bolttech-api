@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  mariadb:
+    container_name: 'mariadb'
+    image: mariadb
+    networks:
+      - webnet
+    environment:
+      MYSQL_ROOT_HOST: 'boltech'
+      MYSQL_ROOT_PASSWORD: 'boltech'
+      MYSQL_PASSWORD: 'boltech'
+      MYSQL_USER: 'boltech'
+      MYSQL_DATABASE: 'boltechDB'
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mariadb
+networks:
+  webnet:
+    driver: bridge
