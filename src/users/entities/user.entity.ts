@@ -15,6 +15,11 @@ export class Users {
   @Column()
   password: string;
 
+  toJSON() {
+    delete this.password;
+    return this;
+  }
+
   @BeforeInsert() async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }

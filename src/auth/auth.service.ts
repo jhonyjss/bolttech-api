@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/users/dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,16 @@ export class AuthService {
 
   async login({ email, password }: LoginDto) {
     try {
-      const user = await this.usersService.findUser(email, password);
+      const user = await this.usersService.findByEmail(email);
+
+      if (!user) {
+        throw new Error('Not found');
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        throw new Error('Password wrong');
+      }
 
       // generate and sign token
       const token = this.createTokenJWT(user);

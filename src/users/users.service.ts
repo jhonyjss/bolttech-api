@@ -46,15 +46,9 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<Users> {
-    return await this.usersRepository.findOne({
-      where: { email },
-    });
-  }
-
-  async findUser(email: string, password: string): Promise<Users> {
     try {
       return await this.usersRepository.findOne({
-        where: { email, password },
+        where: { email },
       });
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);

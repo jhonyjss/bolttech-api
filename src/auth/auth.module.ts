@@ -10,7 +10,7 @@ import { JwtStrategy } from './jwt.strategy';
     UsersModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || `hardtoDisc0ver`,
-      signOptions: { expiresIn: '3h' },
+      signOptions: { expiresIn: '5m' },
     }),
   ],
   providers: [AuthService, JwtStrategy],
