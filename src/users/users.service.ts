@@ -1,3 +1,4 @@
+import { LoginDto } from 'src/users/dto/login.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,23 +21,44 @@ export class UsersService {
       );
     }
 
-    return this.usersRepository.save(user).catch((err) => {
-      switch (err.code) {
-        case 'ER_DUP_ENTRY':
-          throw new HttpException(
-            { message: 'Usuário já registrado' },
-            HttpStatus.BAD_REQUEST,
-          );
-      }
-    });
+    return this.usersRepository
+      .save(user)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        switch (err.code) {
+          case 'ER_DUP_ENTRY':
+            throw new HttpException(
+              { message: 'Usuário já registrado' },
+              HttpStatus.BAD_REQUEST,
+            );
+
+          default:
+            throw new HttpException(
+              { message: err.message },
+              HttpStatus.BAD_REQUEST,
+            );
+        }
+      });
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findByEmail(email: string): Promise<Users> {
+    return await this.usersRepository.findOne({
+      where: { email },
+    });
+  }
+
+  async findUser(email: string, password: string): Promise<Users> {
+    try {
+      return await this.usersRepository.findOne({
+        where: { email, password },
+      });
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class Users {
@@ -9,7 +9,7 @@ export class Users {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()

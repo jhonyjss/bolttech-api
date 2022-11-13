@@ -1,13 +1,9 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { AuthService } from "./auth.service"
-
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class JwtStrategy{
-  constructor(private readonly authService: AuthService) {
-   
-  }
+export class JwtStrategy {
+  constructor(private readonly authService: AuthService) {}
 
   async validate(payload: any) {
     const pl = payload.user;
