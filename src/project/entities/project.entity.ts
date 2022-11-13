@@ -15,7 +15,7 @@ export class Project {
   id: number;
 
   @Column()
-  name: string;
+  description: string;
 
   @Column({ type: 'int' })
   user_id: number;
