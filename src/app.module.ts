@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectModule } from './project/project.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { TaskModule } from './task/task.module';
 import ormconfig from './../config/orm.config';
 
 @Module({
@@ -11,6 +12,7 @@ import ormconfig from './../config/orm.config';
     ProjectModule,
     AuthModule,
     UsersModule,
+    TaskModule,
   ],
   controllers: [],
   providers: [],

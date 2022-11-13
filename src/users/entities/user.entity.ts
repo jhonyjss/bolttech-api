@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
+import { Task } from './../../task/entities/task.entity';
+import { Project } from './../../project/entities/project.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity()
@@ -32,4 +40,10 @@ export class Users {
 
   @Column({ type: 'timestamp', nullable: true })
   deleted_at: Date;
+
+  @OneToMany(() => Project, (project) => project.users)
+  projects: Project[];
+
+  @OneToMany(() => Task, (tasks) => tasks.users)
+  tasks: Task[];
 }
