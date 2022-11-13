@@ -20,13 +20,16 @@ export class Task {
   @Column({ type: 'int' })
   project_id: number;
 
+  @Column({ type: 'int' })
+  user_id: number;
+
   @Column()
   status: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @Column({ type: 'timestamp', default: () => null })
+  @Column({ type: 'date', default: () => null })
   finish_at: Date;
 
   @Column({
@@ -41,6 +44,11 @@ export class Task {
     nullable: true,
   })
   deleted_at: Date;
+
+  toJSON() {
+    delete this.projects;
+    return this;
+  }
 
   @ManyToOne(() => Users, (users) => users.tasks, {
     cascade: true,

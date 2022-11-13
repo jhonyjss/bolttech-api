@@ -27,8 +27,18 @@ export class ProjectService {
     }
   }
 
-  findAll() {
-    return `This action returns all project`;
+  async findAll() {
+    try {
+      const projects = await this.projectRepo.find({
+        relations: ['tasks'],
+      });
+      return projects;
+    } catch (error) {
+      throw new HttpException(
+        { message: error.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   findOne(id: number) {

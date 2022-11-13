@@ -1,11 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Task } from './entities/task.entity';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 @Injectable()
 export class TaskService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  constructor(
+    @InjectRepository(Task)
+    private readonly taskRepo: Repository<Task>,
+  ) {}
+
+  async create(createTaskDto: CreateTaskDto) {
+    try {
+      const project = await this.taskRepo.create(createTaskDto);
+      if (!project) {
+        throw new HttpException(
+          { message: 'Bad request' },
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      return await this.taskRepo.save(project);
+    } catch (error) {
+      throw new HttpException({ message: error.message }, HttpStatus.FORBIDDEN);
+    }
   }
 
   findAll() {
