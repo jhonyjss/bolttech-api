@@ -3,9 +3,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   JoinColumn,
   ManyToOne,
+  BeforeInsert,
 } from 'typeorm';
 import { Users } from 'src/users/entities/user.entity';
 
@@ -24,7 +24,11 @@ export class Task {
   user_id: number;
 
   @Column()
-  status: string;
+  status: boolean;
+
+  @BeforeInsert() async setstatus() {
+    this.status = false;
+  }
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

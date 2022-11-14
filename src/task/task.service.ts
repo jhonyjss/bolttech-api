@@ -19,15 +19,12 @@ export class TaskService {
 
   async create(createTaskDto: CreateTaskDto) {
     try {
-      const project = await this.taskRepo.create(createTaskDto);
-      if (!project) {
-        throw new HttpException(
-          { message: 'Bad request' },
-          HttpStatus.FORBIDDEN,
-        );
+      const task = await this.taskRepo.create(createTaskDto);
+      if (!task) {
+        throw new Error();
       }
 
-      return await this.taskRepo.save(project);
+      return await this.taskRepo.save(task);
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.FORBIDDEN);
     }

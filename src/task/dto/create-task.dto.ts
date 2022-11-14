@@ -1,4 +1,10 @@
-import { IsString, IsInt, IsOptional, IsDateString } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsOptional,
+  IsDateString,
+  IsBoolean,
+} from 'class-validator';
 
 export class CreateTaskDto {
   @IsInt()
@@ -13,10 +19,11 @@ export class CreateTaskDto {
   @IsOptional()
   readonly finish_at: Date;
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
-  readonly status: string;
+  readonly status: boolean;
 
   @IsString()
-  readonly description: string;
+  @IsOptional()
+  description: string;
 }
