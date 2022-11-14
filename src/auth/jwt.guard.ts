@@ -26,7 +26,6 @@ export class JwtGuard implements CanActivate {
         .status(401)
         .json({ message: 'unauthorized, try to authenticate again.' });
     }
-    next();
   }
 
   /*  const Authorization = request.get('Authorization');

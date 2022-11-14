@@ -13,8 +13,8 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { JwtGuard } from '../auth/jwt.guard';
 
-@Controller('project')
 @UseGuards(JwtGuard)
+@Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
