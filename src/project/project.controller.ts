@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { JwtGuard } from '../auth/jwt.guard';
 
 @Controller('project')
+@UseGuards(JwtGuard)
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
