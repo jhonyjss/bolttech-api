@@ -1,8 +1,8 @@
-import { ConnectionOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 
-const config: ConnectionOptions = {
+const config: DataSourceOptions = {
   type: 'mysql',
-  host: '127.0.0.1',
+  host: 'mariadb',
   port: 3306,
   username: 'boltech',
   password: 'boltech',
